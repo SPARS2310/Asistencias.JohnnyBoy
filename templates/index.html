@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checador de Asistencia</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .tarjeta {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            text-align: center;
+            width: 400px;
+        }
+        h1 { color: #333; margin-bottom: 5px; }
+        .instruccion { color: #666; font-size: 18px; margin-bottom: 30px; }
+        .estado {
+            background-color: #e7f3fe;
+            color: #0c5460;
+            padding: 20px;
+            border-radius: 8px;
+            font-size: 20px;
+            font-weight: bold;
+            border: 2px dashed #0c5460;
+        }
+    </style>
+</head>
+<body>
+    <div class="tarjeta">
+        <h1>Sistema de Chequeo</h1>
+        <p class="instruccion">Por favor, acerque su tarjeta RFID al lector</p>
+        <div class="estado" id="mensaje-estado">
+            Esperando tarjeta...
+        </div>
+    </div>
+</body>
+</html>
