@@ -26,6 +26,9 @@ SECRET_KEY = 'django-insecure-yh!bpjx1x0i*u(s*29w7%lje&a)=lqv&$l9w1p-y!@=0j&8ium
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
+CSRF_TRUSTED_ORIGINS = [
+    'https://asistenciasjohnnyboy-production.up.railway.app',
+]
 
 
 # Application definition
