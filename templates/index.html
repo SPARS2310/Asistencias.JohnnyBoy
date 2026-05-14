@@ -62,6 +62,37 @@
         body::before { left: 0; }
         body::after { right: 0; }
 
+        .contenido {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 600px;
+            z-index: 2;
+            position: relative;
+        }
+
+        /* ===== LOGO CENTRADO ARRIBA ===== */
+        .logo-contenedor {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 25px;
+        }
+
+        .logo {
+            width: 240px;
+            height: 240px;
+            object-fit: contain;
+            border-radius: 50%;
+            background: radial-gradient(circle, #1a1a1a 0%, #000 100%);
+            padding: 10px;
+            box-shadow:
+                0 0 0 4px #c9a35f,
+                0 0 0 7px #3d2817,
+                0 10px 25px rgba(0, 0, 0, 0.7),
+                inset 0 0 30px rgba(0, 0, 0, 0.5);
+        }
+
         .panel-asistencias {
             background:
                 radial-gradient(ellipse at top, rgba(255, 220, 150, 0.08) 0%, transparent 60%),
@@ -77,33 +108,9 @@
                 0 25px 50px rgba(0, 0, 0, 0.6),
                 0 10px 20px rgba(0, 0, 0, 0.4);
             width: 100%;
-            max-width: 600px;
             display: flex;
             flex-direction: column;
             padding: 35px 35px 40px;
-            z-index: 2;
-            position: relative;
-        }
-
-        /* Logo pequeño arriba del panel */
-        .logo-contenedor {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 15px;
-        }
-
-        .logo {
-            width: 110px;
-            height: 110px;
-            object-fit: contain;
-            border-radius: 50%;
-            background: radial-gradient(circle, #1a1a1a 0%, #000 100%);
-            padding: 6px;
-            box-shadow:
-                0 0 0 3px #c9a35f,
-                0 0 0 5px #3d2817,
-                0 6px 14px rgba(0, 0, 0, 0.6),
-                inset 0 0 20px rgba(0, 0, 0, 0.5);
         }
 
         .panel-header {
@@ -159,11 +166,10 @@
         .lista-asistencias {
             flex: 1;
             overflow-y: auto;
-            max-height: 500px;
+            max-height: 460px;
             padding-right: 8px;
         }
 
-        /* Scrollbar amaderado */
         .lista-asistencias::-webkit-scrollbar { width: 10px; }
         .lista-asistencias::-webkit-scrollbar-track {
             background: rgba(43, 24, 16, 0.3);
@@ -256,48 +262,51 @@
             animation: aparecer 0.4s ease-out;
         }
 
-        /* ===== RESPONSIVE ===== */
         @media (max-width: 500px) {
             body::before, body::after { width: 15px; }
             .panel-asistencias { padding: 25px 20px 30px; }
             .panel-titulo { font-size: 22px; }
-            .logo { width: 90px; height: 90px; }
-            .lista-asistencias { max-height: 400px; }
+            .logo { width: 170px; height: 170px; }
+            .lista-asistencias { max-height: 380px; }
         }
     </style>
 </head>
 <body>
-    <div class="panel-asistencias">
+    <div class="contenido">
+        <!-- LOGO CENTRADO ARRIBA -->
         <div class="logo-contenedor">
-            <img src="{% static 'img/logo.png' %}" alt="Johnny Boy Barber Shop" class="logo">
+            <img src="{% static 'img/logo.jpeg' %}" alt="Johnny Boy Barber Shop" class="logo">
         </div>
 
-        <div class="panel-header">
-            <h1 class="panel-titulo">Asistencias de Hoy</h1>
-            <div class="panel-fecha" id="fecha-hoy">{{ fecha_hoy|date:"l, d \d\e F \d\e Y" }}</div>
-        </div>
+        <!-- PANEL DE ASISTENCIAS DEL DÍA -->
+        <div class="panel-asistencias">
+            <div class="panel-header">
+                <h1 class="panel-titulo">Asistencias de Hoy</h1>
+                <div class="panel-fecha" id="fecha-hoy">{{ fecha_hoy|date:"l, d \d\e F \d\e Y" }}</div>
+            </div>
 
-        <div class="contador">
-            Registros del día
-            <span class="contador-numero" id="contador-numero">{{ total_hoy }}</span>
-        </div>
+            <div class="contador">
+                Registros del día
+                <span class="contador-numero" id="contador-numero">{{ total_hoy }}</span>
+            </div>
 
-        <div class="lista-asistencias" id="lista-asistencias">
-            {% if registros_hoy %}
-                {% for r in registros_hoy %}
-                <div class="asistencia-item {{ r.tipo|lower }}">
-                    <div class="asistencia-info">
-                        <div class="asistencia-nombre">{{ r.empleado.nombre }}</div>
-                        <span class="asistencia-tipo {{ r.tipo|lower }}">{{ r.get_tipo_display }}</span>
+            <div class="lista-asistencias" id="lista-asistencias">
+                {% if registros_hoy %}
+                    {% for r in registros_hoy %}
+                    <div class="asistencia-item {{ r.tipo|lower }}">
+                        <div class="asistencia-info">
+                            <div class="asistencia-nombre">{{ r.empleado.nombre }}</div>
+                            <span class="asistencia-tipo {{ r.tipo|lower }}">{{ r.get_tipo_display }}</span>
+                        </div>
+                        <div class="asistencia-hora">{{ r.fecha_hora|time:"H:i" }}</div>
                     </div>
-                    <div class="asistencia-hora">{{ r.fecha_hora|time:"H:i" }}</div>
-                </div>
-                {% endfor %}
-            {% else %}
-                <div class="sin-registros" id="sin-registros">
-                    Aún no hay asistencias registradas hoy
-                </div>
-            {% endif %}
+                    {% endfor %}
+                {% else %}
+                    <div class="sin-registros" id="sin-registros">
+                        Aún no hay asistencias registradas hoy
+                    </div>
+                {% endif %}
+            </div>
         </div>
     </div>
 
@@ -341,7 +350,6 @@
             }
         }
 
-        // Actualizar cada 5 segundos
         setInterval(actualizarLista, 5000);
         window.actualizarLista = actualizarLista;
     </script>
