@@ -1,0 +1,46 @@
+{% extends 'patron/base_patron.html' %}
+
+{% block titulo %}Editar Registro - Johnny Boy{% endblock %}
+{% block formulario_titulo %}Editar Registro{% endblock %}
+{% block formulario_subtitulo %}Modificar hora de {{ registro.empleado.nombre }}{% endblock %}
+
+{% block contenido %}
+<form method="post">
+    {% csrf_token %}
+
+    <div class="campo">
+        <label>Barbero</label>
+        <input type="text" value="{{ registro.empleado.nombre }}" disabled
+               style="background: rgba(43,24,16,.1); cursor: not-allowed;">
+        <div class="help-text">No se puede cambiar el barbero del registro.</div>
+    </div>
+
+    <div class="fila-doble">
+        <div class="campo">
+            <label for="fecha">Fecha</label>
+            <input type="date" id="fecha" name="fecha" required value="{{ fecha_actual }}">
+        </div>
+        <div class="campo">
+            <label for="hora">Hora</label>
+            <input type="time" id="hora" name="hora" required value="{{ hora_actual }}">
+        </div>
+    </div>
+
+    <div class="campo">
+        <label for="tipo">Tipo de Registro</label>
+        <select id="tipo" name="tipo" required>
+            <option value="ENTRADA" {% if registro.tipo == 'ENTRADA' %}selected{% endif %}>Entrada</option>
+            <option value="SALIDA" {% if registro.tipo == 'SALIDA' %}selected{% endif %}>Salida</option>
+        </select>
+    </div>
+
+    <div class="info-box">
+        ℹ Usa esta función cuando un barbero olvidó checar o necesites corregir una hora.
+    </div>
+
+    <div class="botones">
+        <a href="{% url 'patron_dashboard' %}" class="btn btn-secondary">Cancelar</a>
+        <button type="submit" class="btn btn-primary">Guardar</button>
+    </div>
+</form>
+{% endblock %}

@@ -1,0 +1,81 @@
+{% extends 'patron/base_patron.html' %}
+
+{% block titulo %}Reportes - Johnny Boy{% endblock %}
+{% block formulario_titulo %}Reportes de Asistencia{% endblock %}
+{% block formulario_subtitulo %}Genera tu reporte por periodo{% endblock %}
+
+{% block contenido %}
+<form id="form-reporte">
+    <div class="fila-doble">
+        <div class="campo">
+            <label for="fecha_inicio">Fecha Inicio</label>
+            <input type="date" id="fecha_inicio" name="fecha_inicio"
+                   value="{{ fecha_inicio_default }}" required>
+        </div>
+        <div class="campo">
+            <label for="fecha_fin">Fecha Fin</label>
+            <input type="date" id="fecha_fin" name="fecha_fin"
+                   value="{{ fecha_fin_default }}" required>
+        </div>
+    </div>
+
+    <div class="campo">
+        <label for="empleado_id">Empleado</label>
+        <select id="empleado_id" name="empleado_id">
+            <option value="todos">— Todos los empleados —</option>
+            {% for emp in empleados %}
+                <option value="{{ emp.id }}">{{ emp.nombre }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="info-box">
+        ℹ El reporte incluirá todas las entradas y salidas dentro del periodo seleccionado,
+        con el cálculo de horas trabajadas por cada sesión.
+    </div>
+
+    <div class="botones">
+        <button type="button" class="btn btn-primary" onclick="descargar('excel')">
+            📊 Excel
+        </button>
+        <button type="button" class="btn btn-danger" onclick="descargar('pdf')">
+            📄 PDF
+        </button>
+    </div>
+
+    <div style="margin-top: 18px;">
+        <a href="{% url 'patron_dashboard' %}" class="btn btn-secondary" style="display: block;">
+            ← Volver al Panel
+        </a>
+    </div>
+</form>
+
+<script>
+    function descargar(formato) {
+        const inicio = document.getElementById('fecha_inicio').value;
+        const fin = document.getElementById('fecha_fin').value;
+        const empleado = document.getElementById('empleado_id').value;
+
+        if (!inicio || !fin) {
+            alert('Por favor selecciona ambas fechas.');
+            return;
+        }
+        if (inicio > fin) {
+            alert('La fecha de inicio no puede ser mayor que la fecha fin.');
+            return;
+        }
+
+        const params = new URLSearchParams({
+            fecha_inicio: inicio,
+            fecha_fin: fin,
+            empleado_id: empleado,
+        });
+
+        const url = formato === 'excel'
+            ? `/patron/reportes/excel/?${params.toString()}`
+            : `/patron/reportes/pdf/?${params.toString()}`;
+
+        window.location.href = url;
+    }
+</script>
+{% endblock %}

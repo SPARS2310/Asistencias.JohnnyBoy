@@ -1,0 +1,20 @@
+{% extends 'patron/base_patron.html' %}
+
+{% block titulo %}Eliminar Barbero - Johnny Boy{% endblock %}
+{% block formulario_titulo %}⚠ Eliminar Barbero{% endblock %}
+{% block formulario_subtitulo %}Esta acción no se puede deshacer{% endblock %}
+
+{% block contenido %}
+<div class="info-box" style="border-left-color: #c41e3a; background: rgba(196,30,58,.08);">
+    ⚠ <strong>¿Estás seguro de eliminar a {{ barbero.nombre }}?</strong><br><br>
+    Esto eliminará también <strong>{{ barbero.registro_set.count }} registro(s)</strong> de asistencia asociados a este barbero. No podrás recuperar esta información.
+</div>
+
+<form method="post" style="margin-top: 25px;">
+    {% csrf_token %}
+    <div class="botones">
+        <a href="{% url 'patron_dashboard' %}" class="btn btn-secondary">Cancelar</a>
+        <button type="submit" class="btn btn-danger">🗑 Sí, Eliminar</button>
+    </div>
+</form>
+{% endblock %}

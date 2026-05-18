@@ -1,0 +1,30 @@
+{% extends 'patron/base_patron.html' %}
+
+{% block titulo %}Editar Barbero - Johnny Boy{% endblock %}
+{% block formulario_titulo %}Editar Barbero{% endblock %}
+{% block formulario_subtitulo %}Modificar datos de {{ barbero.nombre }}{% endblock %}
+
+{% block contenido %}
+<form method="post">
+    {% csrf_token %}
+    <div class="campo">
+        <label for="nombre">Nombre del Barbero</label>
+        <input type="text" id="nombre" name="nombre" required autofocus
+               value="{{ barbero.nombre }}">
+    </div>
+
+    <div class="campo">
+        <label for="uid_rfid">UID de la Tarjeta RFID</label>
+        <input type="text" id="uid_rfid" name="uid_rfid" required
+               value="{{ barbero.uid_rfid }}" style="text-transform: uppercase;">
+        <div class="help-text">
+            Modifica el UID solo si cambias la tarjeta del barbero.
+        </div>
+    </div>
+
+    <div class="botones">
+        <a href="{% url 'patron_dashboard' %}" class="btn btn-secondary">Cancelar</a>
+        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+    </div>
+</form>
+{% endblock %}

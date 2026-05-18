@@ -1,0 +1,22 @@
+{% extends 'patron/base_patron.html' %}
+
+{% block titulo %}Eliminar Registro - Johnny Boy{% endblock %}
+{% block formulario_titulo %}⚠ Eliminar Registro{% endblock %}
+{% block formulario_subtitulo %}Esta acción no se puede deshacer{% endblock %}
+
+{% block contenido %}
+<div class="info-box" style="border-left-color: #c41e3a; background: rgba(196,30,58,.08);">
+    ⚠ <strong>¿Estás seguro de eliminar este registro?</strong><br><br>
+    <strong>Barbero:</strong> {{ registro.empleado.nombre }}<br>
+    <strong>Tipo:</strong> {{ registro.get_tipo_display }}<br>
+    <strong>Fecha y hora:</strong> {{ registro.fecha_hora|date:"d/m/Y H:i" }}<br>
+</div>
+
+<form method="post" style="margin-top: 25px;">
+    {% csrf_token %}
+    <div class="botones">
+        <a href="{% url 'patron_dashboard' %}" class="btn btn-secondary">Cancelar</a>
+        <button type="submit" class="btn btn-danger">🗑 Sí, Eliminar</button>
+    </div>
+</form>
+{% endblock %}

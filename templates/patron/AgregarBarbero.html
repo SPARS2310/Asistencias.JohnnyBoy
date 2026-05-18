@@ -1,0 +1,34 @@
+{% extends 'patron/base_patron.html' %}
+
+{% block titulo %}Agregar Barbero - Johnny Boy{% endblock %}
+{% block formulario_titulo %}Agregar Barbero{% endblock %}
+{% block formulario_subtitulo %}Nuevo miembro del equipo{% endblock %}
+
+{% block contenido %}
+<form method="post">
+    {% csrf_token %}
+    <div class="campo">
+        <label for="nombre">Nombre del Barbero</label>
+        <input type="text" id="nombre" name="nombre" required autofocus
+               placeholder="Ej: Juan Pérez">
+    </div>
+
+    <div class="campo">
+        <label for="uid_rfid">UID de la Tarjeta RFID</label>
+        <input type="text" id="uid_rfid" name="uid_rfid" required
+               placeholder="Ej: 3A358732" style="text-transform: uppercase;">
+        <div class="help-text">
+            Acerca la tarjeta al lector y copia el UID que aparece (8 caracteres en mayúsculas).
+        </div>
+    </div>
+
+    <div class="info-box">
+        ℹ Si no conoces el UID, primero acerca la tarjeta al lector RFID — aparecerá en el Monitor Serial del ESP32 y también podrás verlo en los registros (como "error tarjeta no registrada").
+    </div>
+
+    <div class="botones">
+        <a href="{% url 'patron_dashboard' %}" class="btn btn-secondary">Cancelar</a>
+        <button type="submit" class="btn btn-primary">Guardar</button>
+    </div>
+</form>
+{% endblock %}

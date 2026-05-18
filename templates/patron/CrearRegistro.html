@@ -1,0 +1,49 @@
+{% extends 'patron/base_patron.html' %}
+
+{% block titulo %}Registro Manual - Johnny Boy{% endblock %}
+{% block formulario_titulo %}Registro Manual{% endblock %}
+{% block formulario_subtitulo %}Cuando un barbero olvida checar{% endblock %}
+
+{% block contenido %}
+<form method="post">
+    {% csrf_token %}
+
+    <div class="campo">
+        <label for="barbero_id">Barbero</label>
+        <select id="barbero_id" name="barbero_id" required>
+            <option value="">— Selecciona un barbero —</option>
+            {% for b in barberos %}
+                <option value="{{ b.id }}">{{ b.nombre }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="fila-doble">
+        <div class="campo">
+            <label for="fecha">Fecha</label>
+            <input type="date" id="fecha" name="fecha" required value="{{ fecha_default }}">
+        </div>
+        <div class="campo">
+            <label for="hora">Hora</label>
+            <input type="time" id="hora" name="hora" required value="{{ hora_default }}">
+        </div>
+    </div>
+
+    <div class="campo">
+        <label for="tipo">Tipo</label>
+        <select id="tipo" name="tipo" required>
+            <option value="ENTRADA">Entrada</option>
+            <option value="SALIDA">Salida</option>
+        </select>
+    </div>
+
+    <div class="info-box">
+        ℹ Esta función crea un registro como si el barbero hubiera checado en la hora que selecciones. Útil cuando se les olvida acercar la tarjeta o el lector no estaba disponible.
+    </div>
+
+    <div class="botones">
+        <a href="{% url 'patron_dashboard' %}" class="btn btn-secondary">Cancelar</a>
+        <button type="submit" class="btn btn-primary">Crear Registro</button>
+    </div>
+</form>
+{% endblock %}

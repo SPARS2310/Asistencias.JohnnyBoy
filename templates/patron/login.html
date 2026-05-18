@@ -1,0 +1,219 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acceso del Patrón - Johnny Boy Barber Shop</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Special+Elite&family=Playfair+Display:ital,wght@1,500&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'Special Elite', 'Courier New', monospace;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            background-color: #2b1810;
+            background-image:
+                repeating-linear-gradient(90deg, rgba(0,0,0,.15) 0px, rgba(0,0,0,.15) 2px, transparent 2px, transparent 6px, rgba(0,0,0,.08) 6px, rgba(0,0,0,.08) 8px, transparent 8px, transparent 14px),
+                repeating-linear-gradient(90deg, rgba(80,40,20,.3) 0px, rgba(80,40,20,.3) 40px, rgba(40,20,10,.3) 40px, rgba(40,20,10,.3) 80px),
+                radial-gradient(ellipse at center, #4a2818 0%, #2b1810 70%, #1a0f08 100%);
+        }
+
+        body::before, body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            width: 25px;
+            height: 100vh;
+            background: repeating-linear-gradient(-45deg, #c41e3a 0px, #c41e3a 15px, #fff 15px, #fff 30px, #1e3a8a 30px, #1e3a8a 45px, #fff 45px, #fff 60px);
+            box-shadow: 0 0 20px rgba(0,0,0,.7);
+            border-left: 3px solid #1a0a05;
+            border-right: 3px solid #1a0a05;
+            z-index: 1;
+        }
+        body::before { left: 0; }
+        body::after { right: 0; }
+
+        .login-panel {
+            background:
+                radial-gradient(ellipse at top, rgba(255,220,150,.08) 0%, transparent 60%),
+                linear-gradient(145deg, #f4e4c1 0%, #e8d4a8 50%, #d4b483 100%);
+            border-radius: 8px;
+            box-shadow:
+                inset 0 0 0 2px #8b6f3a, inset 0 0 0 4px #f4e4c1, inset 0 0 0 6px #8b6f3a,
+                0 0 0 8px #3d2817, 0 0 0 12px #c9a35f, 0 0 0 14px #3d2817,
+                0 25px 50px rgba(0,0,0,.6);
+            width: 100%;
+            max-width: 420px;
+            padding: 40px 35px 45px;
+            z-index: 2;
+            position: relative;
+        }
+
+        .logo-contenedor { display: flex; justify-content: center; margin-bottom: 18px; }
+
+        .logo {
+            width: 140px; height: 140px;
+            object-fit: contain;
+            border-radius: 50%;
+            background: radial-gradient(circle, #1a1a1a 0%, #000 100%);
+            padding: 6px;
+            box-shadow: 0 0 0 3px #c9a35f, 0 0 0 5px #3d2817, 0 6px 14px rgba(0,0,0,.6), inset 0 0 20px rgba(0,0,0,.5);
+        }
+
+        h1 {
+            font-family: 'Cinzel', serif;
+            font-weight: 900;
+            color: #3d2817;
+            font-size: 24px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-align: center;
+            text-shadow: 2px 2px 0 #c9a35f, 3px 3px 0 rgba(0,0,0,.2);
+            margin: 0 0 6px 0;
+        }
+
+        .subtitulo {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            color: #6b4423;
+            font-size: 14px;
+            text-align: center;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+        }
+
+        .divisor {
+            display: flex; align-items: center; justify-content: center;
+            margin: 18px 0 22px;
+            color: #8b4513;
+        }
+        .divisor::before, .divisor::after {
+            content: '';
+            flex: 1;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #8b4513, transparent);
+            max-width: 80px;
+        }
+        .divisor span { margin: 0 15px; font-size: 20px; }
+
+        .campo { margin-bottom: 18px; }
+
+        label {
+            display: block;
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
+            color: #3d2817;
+            text-transform: uppercase;
+            font-size: 12px;
+            letter-spacing: 1.5px;
+            margin-bottom: 6px;
+        }
+
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 11px 14px;
+            background: #fff8e7;
+            border: 2px solid #8b6f3a;
+            border-radius: 4px;
+            font-family: 'Special Elite', monospace;
+            font-size: 15px;
+            color: #3d2817;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,.1);
+        }
+
+        input:focus {
+            border-color: #c9a35f; outline: none;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,.1), 0 0 0 3px rgba(201,163,95,.3);
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(180deg, #c41e3a 0%, #8b1428 100%);
+            color: #f4e4c1;
+            border: 2px solid #c9a35f;
+            border-radius: 5px;
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
+            font-size: 15px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            margin-top: 10px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,.5);
+            box-shadow: 0 4px 8px rgba(0,0,0,.4);
+            transition: all .2s ease;
+        }
+
+        .btn-login:hover {
+            background: linear-gradient(180deg, #e63950 0%, #a01a30 100%);
+            transform: translateY(-2px);
+        }
+
+        .error {
+            background: rgba(196, 30, 58, .12);
+            border-left: 4px solid #c41e3a;
+            color: #8b1428;
+            padding: 10px 15px;
+            margin-bottom: 18px;
+            border-radius: 3px;
+            font-family: 'Special Elite', monospace;
+            font-size: 14px;
+        }
+
+        .pie {
+            margin-top: 22px;
+            text-align: center;
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            color: #6b4423;
+            font-size: 12px;
+            letter-spacing: 1px;
+        }
+        .pie::before, .pie::after { content: '—'; margin: 0 8px; }
+
+        @media (max-width: 500px) {
+            body::before, body::after { width: 15px; }
+            .login-panel { padding: 30px 22px 35px; }
+            h1 { font-size: 20px; }
+            .logo { width: 110px; height: 110px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-panel">
+        <div class="logo-contenedor">
+            <img src="{% static 'img/logo.jpeg' %}" alt="Johnny Boy Barber Shop" class="logo">
+        </div>
+
+        <h1>Acceso del Patrón</h1>
+        <div class="subtitulo">Johnny Boy Barber Shop</div>
+        <div class="divisor"><span>✂</span></div>
+
+        {% if error %}
+            <div class="error">⚠ {{ error }}</div>
+        {% endif %}
+
+        <form method="post">
+            {% csrf_token %}
+            <div class="campo">
+                <label for="usuario">Usuario</label>
+                <input type="text" id="usuario" name="usuario" required autofocus>
+            </div>
+            <div class="campo">
+                <label for="contrasena">Contraseña</label>
+                <input type="password" id="contrasena" name="contrasena" required>
+            </div>
+            <button type="submit" class="btn-login">Entrar</button>
+        </form>
+
+        <div class="pie">Johnny Boy Barber Shop</div>
+    </div>
+</body>
+</html>
